@@ -90,6 +90,7 @@ def edit(request, *args, **kwargs):
             feedlist = form.save()
             if feedlist.update_feeds():
                 messages.success(request, 'The feed list has been updated successfully.')
+                form = FeedListEditForm(instance=feedlist)
             else:
                 messages.error(request, 'There was an error importing your feeds.')
         else:

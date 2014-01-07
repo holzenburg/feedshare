@@ -17,7 +17,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 
 {% block content %}
 <div class="text-center">
-	<h1>Share</h1>
+	<h1>Share your list</h1>
 	<p class="lead">
 		<span id="intro-action">Upload or link</span> to your OPML feed list below.<br class="visible-xs"> It will be publicly available.<br />
 		The slug will be part of the link to it.
@@ -62,7 +62,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 					<div class="well">
 						<div class="form-group">
 							<div class="input-group" style="margin-bottom:10px;">
-								<span class="input-group-addon"><span class="hidden-xs"><i class="fa fa-globe"></i> http://</span>feedshare.net/</span>
+								<span class="input-group-addon"><nobr><i class="fa fa-globe"></i>&nbsp;feedshare.net/</nobr></span>
 								<input class="form-control input-lg text-left" id="id_slug" maxlength="255" name="slug" placeholder="Slug" required="required" title="List slug" type="text" value="{% if upload_form.slug.value %}{{ upload_form.slug.value }}{% endif %}">
 							</div>
 						</div>
@@ -95,7 +95,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 					<div class="well">
 						<div class="form-group">
 							<div class="input-group" style="margin-bottom:10px;">
-								<span class="input-group-addon"><span class="hidden-xs"><i class="fa fa-globe"></i> http://</span>feedshare.net/</span>
+								<span class="input-group-addon"><nobr><i class="fa fa-globe"></i>&nbsp;feedshare.net/</nobr></span>
 								<input class="form-control input-lg text-left" id="id_slug" maxlength="255" name="slug" placeholder="Slug" required="required" title="List slug" type="text" value="{% if link_form.slug.value %}{{ link_form.slug.value }}{% endif %}">
 							</div>
 						</div>

@@ -71,6 +71,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'bootstrap3',
     'bootstrap_pagination',
+    'taggit',
         
     # project apps
     'feedlists'
@@ -131,7 +132,12 @@ GRAPPELLI_ADMIN_TITLE = 'FeedShare Admin'
 # Local settings
 # - Set a SECRET_KEY!
 
+LOCAL_APPS = tuple()
+
 try:
-   from local_settings import *
+    from local_settings import *
+    INSTALLED_APPS += LOCAL_APPS
 except ImportError, e:
-   pass
+    pass
+   
+

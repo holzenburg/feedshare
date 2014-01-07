@@ -63,15 +63,17 @@ class FeedListLinkForm(forms.ModelForm):
 
 class FeedListEditForm(forms.ModelForm):
     
-    def clean(self):
-        if not self.url and not self.file:
-            raise ValidationError("You must upload a file or enter a valid URL")
+    def clean_url(self):
+        data = self.cleaned_data['url']
+        if not data and not self.cleaned_data['file']:
+            raise forms.ValidationError("You must upload a file or enter a valid URL")
+        return data
             
     def clean_slug(self):
         return _clean_slug(self)
         
     class Meta:
         model = FeedList
-        exclude = ['secret', 'processing_error', 'datetime_updated', 'views']
+        exclude = ['secret', 'processing_error', 'datetime_updated', 'datetime_process', 'views', 'tags', 'feeds']
 
     

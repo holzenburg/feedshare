@@ -31,11 +31,11 @@ jQuery(function($) {
 	<div class="col-sm-6 text-right">
 		<br class="hidden-xs" />
 		{% if feedlist.url %}
-			<a href="{{ feedlist.url }}" class="btn btn-lg btn-warning" style="padding-left:10px;max-width:100%;">
+			<a href="{{ feedlist.url }}" class="btn btn-lg btn-warning fs-download-opml-button">
 				<i class="fa fa-download"></i> {{ feedlist.url_filename }}
 			</a>
 		{% else %}{% if feedlist.file %}
-			<a href="{{ feedlist.file.url }}" class="btn btn-lg btn-warning" style="padding-left:10px;">
+			<a href="{{ feedlist.file.url }}" class="btn btn-lg btn-warning fs-download-opml-button">
 				<i class="fa fa-download"></i> {{ feedlist.filename }}
 			</a>
 		{% endif %}{% endif %}
@@ -46,8 +46,9 @@ jQuery(function($) {
 
 <div id="FeedList">
 	<hr class="hidden-xs" />
-	{% for feed in feedlist.feed_set.all %}
-	{% with feed.get_tags as tags %}
+	{% for feedlistfeed in feedlist.feedlistfeed_set.all %}
+		{% with feedlistfeed.feed as feed %}
+		{% with feedlistfeed.tags.all as tags %}
 		<div class="row">
 			<div class="col-md-9 col-sm-7 col-xs-12">
 				<h4 class="pull-left">
@@ -68,7 +69,8 @@ jQuery(function($) {
 			</div>
 		</div>
 		<hr />
-	{% endwith %}
+		{% endwith %}
+		{% endwith %}
 	{% endfor %}
 </div>
 <div class="text-center">

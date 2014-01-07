@@ -2,28 +2,17 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<p class="text-center">
-					<small>
-						<span class="part text-danger">
-							<i class="fa fa-flash"></i>
-							Report abuse:
-							<a href="mailto:abuse@feedshare.net"><span class="text-danger" style="text-decoration:underline;">abuse@feedshare.net</span></a>
-						</span><br />
-						<span class="part">
-							<i class="fa fa-info"></i>
-							<a href="{% url 'imprint' %}">Imprint</a>
-							&nbsp;&nbsp;&nbsp;
-							<i class="fa fa-legal"></i>
-							<a href="{% url 'legal' %}">Legal</a>
-							&nbsp;&nbsp;&nbsp;
-							<i class="fa fa-eye"></i>
-							<a href="{% url 'privacy' %}">Privacy</a>
-							&nbsp;&nbsp;&nbsp;
-							<i class="fa fa-code"></i>
-							<a href="{% url 'contribute' %}">Contribute</a>
-						</span>
-					</small>
-				</p>
+				<ul class="list-inline">
+					<li><a href="{% url 'imprint' %}"><i class="fa fa-info"></i> Imprint</a></li>
+					<li><a href="{% url 'legal' %}"><i class="fa fa-legal"></i> Legal</a></li>
+					<li><a href="{% url 'privacy' %}"><i class="fa fa-eye"></i> Privacy</a></li>
+					<li><a href="{% url 'contribute' %}"><i class="fa fa-code"></i> Contribute</a></li>
+					<li class="pull-right">
+						<i class="fa fa-flash"></i>
+						Report abuse:
+						<a href="mailto:abuse@feedshare.net"><span class="text-danger" style="text-decoration:underline;">abuse@feedshare.net</span></a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

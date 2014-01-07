@@ -2,6 +2,8 @@ ipython>=1.1.0
 mysql-python
 pytz
 
+listparser
+
 django>=1.6.1
 South>=0.8.4
 django-extensions
@@ -9,4 +11,4 @@ django-admin-tools
 django-bootstrap3
 django-bootstrap-pagination
 django-grappelli
-listparser
+django-taggit

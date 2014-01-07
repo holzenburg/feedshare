@@ -1,16 +1,13 @@
 from django.contrib import admin
 
 from .models import FeedList
+from .models import FeedListFeed
 from .models import Feed
 
 
-class FeedInlineAdmin(admin.TabularInline):
-    model = Feed
-    extra = 0
-
 class FeedListAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'datetime_created', 'views')
-    inlines = [FeedInlineAdmin]
+    list_display = ('__unicode__', 'datetime_created', 'views', 'url', 'file', 'processing_error')
+    list_filter = ('processing_error',)
 admin.site.register(FeedList, FeedListAdmin)
 
 

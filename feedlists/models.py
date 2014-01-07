@@ -4,16 +4,20 @@ import uuid
 import hashlib
 import datetime
 import urlparse
+import time
 
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 
+from taggit.managers import TaggableManager    
+
 import listparser
 
 
 def get_upload_path(instance, filename):
-    return os.path.join('lists', instance.slug, filename)
+    directory = instance.slug or hashlib.md5(str(uuid.uuid4())).hexdigest()[0:10]
+    return os.path.join('lists', directory, filename)
 
 remove_email_re = re.compile(r'.*(([_a-z0-9-]+?(\.[_a-z0-9-]+?)*)@([a-z0-9-]+?(\.[a-z0-9-]+?)*(\.[a-z]{2,4}))).*')
       
@@ -24,28 +28,35 @@ def remove_email(string):
 
 class FeedList(models.Model):
     slug = models.SlugField(max_length=255, unique=True, help_text='Part of the URL (http://feedshare.net/your-slug)')
-    title = models.CharField(max_length=255, blank=True)
-    description = models.TextField(blank=True)
-    author = models.CharField(max_length=255, blank=True, verbose_name='Your name')
-    author_email = models.EmailField(max_length=255, blank=True, verbose_name='Email address', help_text='Not public, just to recover the secret editing key')
-    file = models.FileField(upload_to=get_upload_path, blank=True, verbose_name='OPML File')
-    url = models.URLField(max_length=255, blank=True, verbose_name='OPML URL')
+    title = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    author = models.CharField(max_length=255, blank=True, null=True, verbose_name='Your name')
+    author_email = models.EmailField(max_length=255, blank=True, null=True, verbose_name='Email address', help_text='Not public, just to recover the secret editing key')
+    file = models.FileField(upload_to=get_upload_path, blank=True, null=True, verbose_name='OPML File')
+    url = models.URLField(max_length=255, blank=True, null=True, verbose_name='OPML URL')
     secret = models.CharField(max_length=255)
     processing_error = models.BooleanField(blank=True, default=False)
     datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_process = models.DateTimeField(blank=True, null=True)
     datetime_updated = models.DateTimeField(blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
+    feeds = models.ManyToManyField('Feed', through='FeedListFeed')
+    tags = TaggableManager()
 
+    class Meta:
+        verbose_name = 'Feedlist'
+        verbose_name_plural = 'Feedlist'
+
+    def __unicode__(self):
+        return remove_email(self.title if self.title and len(self.title) else self.slug)
+    
     def save(self, *args, **kwargs):
         if not self.secret:
             self.secret = hashlib.md5(str(uuid.uuid4())).hexdigest()[0:10]
         super(FeedList, self).save(*args, **kwargs)
     
-    def __unicode__(self):
-        return remove_email(self.title if self.title and len(self.title) else self.slug)
-    
     def view(self):
-        self.update_from_url_if_necessary()
+        self.update_if_necessary()
         self.views += 1
         self.save()
     
@@ -63,6 +74,16 @@ class FeedList(models.Model):
         if self.url:
             return os.path.basename(self.url)
 
+    def update_if_necessary(self):
+        if self.processing_error:
+            if not self.datetime_process or self.datetime_process < now() - datetime.timedelta(minutes=5):
+                self.update_feeds()
+        elif self.url:
+            if not self.datetime_updated or self.datetime_updated < now() - datetime.timedelta(days=7):
+                success = self._process_url()
+                self.update_success(success, save=False)
+        return self.processing_error
+    
     def update_feeds(self):
         success = False
         if self.url:
@@ -72,15 +93,8 @@ class FeedList(models.Model):
         self.update_success(success)
         return success
         
-    def update_from_url_if_necessary(self):
-        if self.url:
-            if not self.datetime_updated or self.datetime_updated < now() - datetime.timedelta(days=7):
-                success = self._process_url()
-                self.update_success(success, save=False)
-                return success
-        return self.processing_error
-    
     def update_success(self, success, save=True):
+        self.datetime_process = now()
         if success:
             self.processing_error = False
             self.datetime_updated = now()
@@ -100,40 +114,58 @@ class FeedList(models.Model):
     
     def _process_file(self):
         result = listparser.parse(self.file, 'feedshare.net')
-        if result['bozo'] == 1:
+        if result['bozo'] == 1 and not result['feeds']:
             return False
         self._process_result(result)
         return True
     
     def _process_result(self, result):
+        if not self.pk:
+            self.save()
         if (not self.title or not len(self.title)) and result.meta.title:
             self.title = result.meta.title
             
+        feedlistfeed_pks = []
+            
         for feed_data in result.feeds:
-            tags = []
-            for tag in feed_data['tags']:
-                if tag not in tags:
-                    tags.append(tag)
-            for category in feed_data['categories']:
-                if tag not in tags:
-                    tags.append(tag)
+            feed, feed_created = Feed.objects.get_or_create(url=feed_data['url'], defaults={'title':feed_data['title']})
+            feedlistfeed, feedlistfeed_created = FeedListFeed.objects.get_or_create(feed=feed, feedlist=self)
+            feedlistfeed.title = feed_data['title']
+            feedlistfeed.tags.add(*[x.lower() for x in feed_data['tags']])
+            feedlistfeed.save()
+            feedlistfeed_pks.append(feedlistfeed.pk)
+            
+        FeedListFeed.objects.filter(feedlist=self).exclude(pk__in=feedlistfeed_pks).delete()
 
-            feed, created = Feed.objects.get_or_create(feedlist=self, url=feed_data['url'])
-            feed.title = feed_data['title']
-            feed.tags = ','.join(tags)
-            feed.save()
+
+class FeedListFeed(models.Model):
+    feedlist = models.ForeignKey('FeedList')
+    feed = models.ForeignKey('Feed')
+    title = models.CharField(max_length=255, blank=True, null=True)
+    tags = TaggableManager()
+
+    class Meta:
+        verbose_name = 'Feedlist Feed'
+        verbose_name_plural = 'Feedlist Feeds'
+
+    def __unicode__(self):
+        return unicode(self.title)
 
 
 class Feed(models.Model):
-    feedlist = models.ForeignKey(FeedList)
     url = models.TextField()
-    title = models.CharField(max_length=255, blank=True)
-    tags = models.TextField(blank=True)
-    description = models.TextField(blank=True)
+    site_url = models.URLField(blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
-    def get_tags(self):
-        return self.tags.split(',')
+    class Meta:
+        verbose_name = 'Feed'
+        verbose_name_plural = 'Feeds'
 
-    def get_site_url(self):
-        return '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse.urlparse(self.url))
+    def __unicode__(self):
+        return unicode(self.url)
+    
+    def save(self, *args, **kwargs):
+        self.site_url = '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse.urlparse(self.url))
+        super(Feed, self).save(*args, **kwargs)
     
