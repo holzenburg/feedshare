@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Search lists{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-4 text-center {% if not q %}col-md-offset-4{% endif %}">
+
+		<span style="font-size:150px;">
+			<i class="fa fa-search"></i>
+		</span>
+		
+	</div>
+	<div class="{% if q %}col-md-8{% else %}col-md-4 col-md-offset-4{% endif %}">
+
+	    <form class="form" role="search" method="get" action="{% url 'feedlists_search' %}">
+			<div class="row">
+				<div class="col-xs-8" style="padding-right:3px;">
+					<input type="text" name="q" class="form-control input-lg" placeholder="Search for a list" value="{% if q %}{{ q }}{% endif %}">
+				</div>
+				<div class="col-xs-4" style="padding-left:3px;">
+					<button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>
+				</div>
+			</div>
+		</form>
+				
+		{% if q and q|length %}<h1 class="sr-only">Lists with <i class="">{{ q }}</i></h1>{% endif %}
+
+		<hr />
+
+		{% if q %}
+			{% for feedlist in feedlists %}
+			<p class="lead">
+				<a href="{{ feedlist.get_absolute_url }}">{{ feedlist }}</a>
+				<br class="visible-xs">
+				{% if feedlist.author %}<small>by {{ feedlist.author }}</small>{% endif %}
+			</p>
+			<hr />
+			{% empty %}
+			<h2>No results for <i>{{ q }}</i></h2>
+			{% endfor %}
+		{% endif %}
+		
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+TASK=${1}
+
+if [ -z $TASK ]
+	then
+		echo "Options:"
+		echo "  run       -> runserver on 127.0.0.1:8001"
+		echo "  rundev    -> runserver on 127.0.0.1:8080"
+		echo "  runpublic -> runserver on 0.0.0.0:80"
+		echo "  shell     -> shell_plus"
+		echo
+		read -p "What do you want to do?  " TASK
+fi
+
+
+case $TASK in
+	run)
+		./manage.py runserver 127.0.0.1:8000
+		;;
+	rundev)
+		./manage.py runserver 127.0.0.1:8080
+		;;
+	runpublic)
+		sudo ./manage.py runserver 0.0.0.0:80
+		;;
+	shell)
+		./manage.py shell_plus
+		;;
+	*)
+		./manage.py ${1} ${2} ${3} ${4} ${5} ${6}
+		;;
+esac
+

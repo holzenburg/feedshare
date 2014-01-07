@@ -1,0 +1,26 @@
+<header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+	<div class="container">
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-collapse">
+				<span class="sr-only">Navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/"><span class="fs-logo" style="font-size:20px;font-weight:200;color:white;">feedshare.net</span></a>
+		</div>
+
+		<nav class="collapse navbar-collapse" id="nav-collapse" role="navigation">
+			<form class="navbar-form navbar-right fs-search-form" role="search" method="get" action="{% url 'feedlists_search' %}">
+				<input type="text" name="q" class="form-control input-sm fs-search-input" placeholder="Search for a list" value="{% if q %}{{ q }}{% endif %}">
+				<button type="submit" class="btn-sm btn btn-primary fs-search-button"><i class="fa fa-search"></i></button>
+			</form>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="{% url 'feedlists_share' %}"><strong style="color:white;"><i class="fa fa-heart" style="color:#c30"></i> Share your list</strong></a></li>
+				<li><a href="{% url 'feedlists_popular' %}"><i class="fa fa-star"></i> Popular</a></li>
+			</ul>
+		</nav>
+
+	</div>
+</header>

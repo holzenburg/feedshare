@@ -1,0 +1,58 @@
+TASK=${1}
+APP=${2}
+PORT=${3}
+
+if [ -z $TASK ]
+	then
+		read -p "What do you want to do? (init, auto, migrate)  " TASK
+fi
+
+if [ -z $PORT ]
+	then
+		PORT="8000"
+fi
+
+
+case $TASK in
+	"init")
+		if [ -z $APP ]
+			then
+				read -p "And the app name?  " APP
+		fi
+		./manage.py schemamigration --initial $APP
+		;;
+	"make")
+		if [ -z $APP ]
+			then
+				read -p "And the app name?  " APP
+		fi
+		./manage.py schemamigration --auto $APP
+		;;
+	"auto")
+		if [ -z $APP ]
+			then
+				read -p "And the app name?  " APP
+		fi
+		./manage.py schemamigration --auto $APP
+		./manage.py migrate $APP
+		;;
+	"dry")
+		./manage.py migrate -v 2 --db-dry-run $APP
+	;;
+	"migrate")
+		./manage.py migrate $APP
+		;;
+	"go")
+		./manage.py schemamigration --auto $APP
+		./manage.py migrate $APP
+		./manage.py runserver $PORT
+		;;		
+	*)
+		echo "Unknown task. Try this:"
+		echo " - south init app_name"
+		echo " - south auto app_name"
+		echo " - south migrate [app_name]"
+		;;
+esac
+
+echo

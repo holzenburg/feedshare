@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}Edit {{ feedlist }}{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="noindex,nofollow" />
+{% endblock %}
+
+{% block content %}
+
+<a class="btn btn-lg btn-success pull-right" target="_blank" href="{{ feedlist.get_absolute_url }}">View this list</a>
+
+<h1>Edit {{ feedlist }}</h1>
+
+<p class="lead">
+	You may add additional information for this list.
+	The email address will never be visible but may be used to recover the secret url to the page you see right now.
+	<i class="fa fa-exclamation-triangle text-danger"></i> There is no way to edit the list without this link:
+</p>
+<p class="lead alert alert-warning">
+	Please bookmark (or save elsewhere):
+	<a href="http://feedshare.net{{ feedlist.get_edit_url }}">http://feedshare.net{{ feedlist.get_edit_url }}</a>
+</p>
+
+<form action="{% url 'feedlists_edit' feedlist.slug feedlist.secret %}" method="post" class="form form-horizontal" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' label_class='col-md-4' field_class='col-md-6' %}
+    {% buttons %}
+	<div class="col-md-6 col-md-offset-4">
+		<br />
+        <button type="submit" class="btn btn-primary btn-lg">Update</button>
+	</div>
+    {% endbuttons %}
+</form>
+{% endblock %}
