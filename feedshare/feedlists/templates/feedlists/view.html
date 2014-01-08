@@ -59,11 +59,11 @@ jQuery(function($) {
 		<div class="row">
 			<div class="col-md-9 col-sm-7 col-xs-12">
 				<h4 class="pull-left">
-					<a href="{{ feed.site_url }}" target="_blank">{{ feed.title }}</a>
+					<a href="{{ feed.site_url }}" class="text-danger" target="_blank">{{ feed.title }}</a>
 				</h4>
 				<p class="pull-right">
 					{% for tag in tags %}
-						<a class="label label-default" href="{% url 'feedlists_tag_specific' tag %}">{{ tag }}</a>
+						<a class="label label-info" href="{% url 'feedlists_tag_specific' tag %}">{{ tag }}</a>
 					{% endfor %}
 				</p>
 			</div>
