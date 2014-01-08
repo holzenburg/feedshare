@@ -2,6 +2,7 @@
 
 body {
     padding-top: 50px;
+    background: #f6f5f4;
 }
 html, body {
      height: 100%; /* required for footer */
@@ -16,7 +17,7 @@ html, body {
     padding-top: 50px;
 }
 .fs-page-footer {
-    background: #eee;
+    background: #e4e3e2;
     color: #666;
     position: relative;
     margin-top: -50px; /* negative footer height */
@@ -33,6 +34,9 @@ html, body {
     text-decoration: none;
     color: #333;
 }
+.navbar-inverse {
+    background: #2a2a22;
+}
 
 @media(max-width:767px){
     .fs-page-content {
@@ -48,6 +52,11 @@ html, body {
 
 body.fs-index {
     color: #333;
+}
+@media(min-width:768px){
+    body.fs-index {
+        padding-top: 150px;
+    }
 }
 body.fs-index h1 {
     font-size: 300%;

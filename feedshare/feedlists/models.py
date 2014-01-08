@@ -14,6 +14,10 @@ from taggit.managers import TaggableManager
 
 import listparser
 
+current_milli_time = lambda: int(round(time.time() * 1000))
+
+POPULARITY_HN_GRAVITY = 1.2  # hn: 1.8
+
 
 def get_upload_path(instance, filename):
     directory = instance.slug \
@@ -29,7 +33,49 @@ def remove_email(string):
     return string.replace('@%s' % result.groups()[3], '') if result else string
 
 
-class FeedList(models.Model):
+class PopularityModel(models.Model):
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    votes = models.PositiveIntegerField(default=0)
+
+    # http://stackoverflow.com/questions/11128086/simple-popularity-algorithm
+    popularity_pt2_a = models.FloatField(default=0)
+    popularity_pt2_b = models.FloatField(default=0)
+
+    # http://amix.dk/blog/post/19574
+    popularity_hn = models.FloatField(default=0)
+
+    class Meta:
+        abstract = True
+
+    def vote(self, t=None):
+        self.votes += 1
+        if not t:
+            t = float(current_milli_time())
+        self.update_popularity_pt2_a(t)
+        self.update_popularity_pt2_b(t)
+        self.update_popularity_hn()
+
+    def update_popularity_pt2_a(self, t):
+        p = float(self.popularity_pt2_a)
+        self.popularity_pt2_a = (p + t) / 2.0 if p else t
+
+    def update_popularity_pt2_b(self, t):
+        p = float(self.popularity_pt2_b)
+        if p:
+            self.popularity_pt2_b = (p + t) / 2.0
+        else:
+            initial = self.__class__.objects.aggregate(
+                models.Avg('popularity_pt2_b')
+            ).values()[0]
+            self.popularity_pt2_b = initial if initial > 0 else t
+
+    def update_popularity_hn(self):
+        t = float((now() - self.datetime_created).seconds) / 3600
+        p = (self.votes - 1) / ((t + 2) ** POPULARITY_HN_GRAVITY)
+        self.popularity_hn = p
+
+
+class FeedList(PopularityModel):
     slug = models.SlugField(
         max_length=255,
         unique=True,
@@ -61,8 +107,6 @@ class FeedList(models.Model):
     processing_error = models.BooleanField(
         blank=True,
         default=False)
-    datetime_created = models.DateTimeField(
-        auto_now_add=True)
     datetime_process = models.DateTimeField(
         blank=True, null=True)
     datetime_updated = models.DateTimeField(
@@ -171,6 +215,8 @@ class FeedList(models.Model):
                     defaults={'title': feed_data['title']})
             feedlistfeed, feedlistfeed_created = FeedListFeed.objects\
                 .get_or_create(feed=feed, feedlist=self)
+            if feedlistfeed_created:
+                feed.vote()
             feedlistfeed.title = feed_data['title']
             feedlistfeed.tags.add(*[x.lower() for x in feed_data['tags']])
             feedlistfeed.save()
@@ -195,7 +241,7 @@ class FeedListFeed(models.Model):
         return unicode(self.title)
 
 
-class Feed(models.Model):
+class Feed(PopularityModel):
     url = models.TextField()
     site_url = models.URLField(blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)

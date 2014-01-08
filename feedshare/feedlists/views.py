@@ -24,6 +24,15 @@ from .forms import FeedListEditForm
 cache = get_cache('default')
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 @cache_page(60 * 5)
 def index(request, *args, **kwargs):
     return render(request, 'feedlists/index.html')
@@ -31,7 +40,12 @@ def index(request, *args, **kwargs):
 
 def view(request, *args, **kwargs):
     feedlist = get_object_or_404(FeedList, slug=kwargs.get('slug'))
-    feedlist.view()
+    ip = get_client_ip(request)
+    view_key = 'feedlist-view:%s:%s' % (feedlist.pk, ip)
+    if not cache.get(view_key):
+        feedlist.view()
+        feedlist.vote()
+        cache.set(view_key, True)
     return render(request, 'feedlists/view.html', dict(feedlist=feedlist))
 
 
@@ -177,6 +191,7 @@ def share(request):
 @never_cache
 def edit(request, *args, **kwargs):
     feedlist = get_object_or_404(FeedList, slug=kwargs.get('slug'))
+
     secret = kwargs.get('secret')
     if secret != feedlist.secret:
         messages.error(request,
@@ -187,6 +202,7 @@ def edit(request, *args, **kwargs):
     if request.method == 'POST':
         form = FeedListEditForm(request.POST, request.FILES, instance=feedlist)
         if form.is_valid():
+            feedlist.processing_error = False
             feedlist = form.save()
             if feedlist.update_feeds():
                 messages.success(request,
