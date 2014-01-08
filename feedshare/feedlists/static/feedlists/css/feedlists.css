@@ -14,7 +14,11 @@ html, body {
 .fs-page-content {
     overflow: visible;  /* required for footer */
     padding-bottom: 150px; /* needs to be bigger than footer height*/
-    padding-top: 50px;
+}
+@media (min-width: 768px) {
+    .fs-page-content {
+        padding-top: 50px;
+    }
 }
 .fs-page-footer {
     background: #e4e3e2;
@@ -89,6 +93,27 @@ body.fs-index .lead a {
 input[type="file"] {
     display: inline;
     line-height: 100%;
+}
+
+/* Tabs */
+
+.fs-tab-content .well {
+    background: #fafafa;
+    border-color: #ddd;
+    box-shadow: none;
+}
+.fs-tabs>li.active>a,
+.fs-tabs>li.active>a:hover,
+.fs-tabs>li.active>a:focus {
+    background: #fafafa;
+}
+
+@media (min-width: 768px) {
+    .fs-tab-content .well {
+        border-top: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
 }
 
 /* FeedList */
