@@ -3,18 +3,23 @@
 
 {% block title %}Share your list{% endblock %}
 
+{% block body_class %}fs-index{% endblock %}
+
 {% block content %}
 <div class="text-center">
 
-	<h1>Share your list</h1>
-	<p class="lead">
-		feedshare.net is a simple service to share your feed reading list.<br />
+	<p class="lead" style="margin-top:100px;">
+		feedshare.net lets you share your feed reading list.<br class="hidden-xs" />
 		Simply <a href="{% url 'feedlists_share' %}">upload or link to your OPML file</a> and share the link.
 	</p>
 	<p>
 		<a href="{% url 'feedlists_share' %}" class="btn btn-lg btn-danger">
 			<i class="fa fa-heart"></i>&nbsp;
 			Share your list
+		</a>
+		<a href="{% url 'feedlists_popular' %}" class="btn btn-lg btn-success">
+			<i class="fa fa-rocket"></i>&nbsp;
+			Discover
 		</a>
 	</p>
 

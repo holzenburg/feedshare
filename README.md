@@ -38,8 +38,7 @@ Contribute
 ----------
 These features would be quite nice to have. If somebody wants to work on them, please get in touch:
 
-- __Caching__: Would certainly be helpful
-- __Search__: Implement a (real) search engine
+- __Search__: Implement a scalable search engine
 - __Discovery__: Enhanced discovery features
 
 

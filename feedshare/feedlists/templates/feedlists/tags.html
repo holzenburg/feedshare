@@ -31,15 +31,15 @@ $('input[name=tag]').autocomplete('{% url "feedlists_autocomplete_tags" %}?q=%QU
 	
 	<div class="col-md-12 text-center">
 		{% for tag in tags %}
-		{% if forloop.counter == 1 %}<div class="fs-commontags-1">{% endif %}
-		{% if forloop.counter == 20 %}</div><div class="fs-commontags-2">{% endif %}
-		{% if forloop.counter == 50 %}</div><div class="fs-commontags-3">{% endif %}
-		{% if forloop.counter == 100 %}</div><div class="fs-commontags-4">{% endif %}
-		{% if forloop.counter == 150 %}</div><div class="fs-commontags-5">{% endif %}
-		{% if forloop.counter == 200 %}</div><div class="fs-commontags-6">{% endif %}
+		{% if forloop.counter == 1 %}<span class="fs-commontags-1">{% endif %}
+		{% if forloop.counter == 20 %}</span><span class="fs-commontags-2">{% endif %}
+		{% if forloop.counter == 50 %}</span><span class="fs-commontags-3">{% endif %}
+		{% if forloop.counter == 100 %}</span><span class="fs-commontags-4">{% endif %}
+		{% if forloop.counter == 150 %}</span><span class="fs-commontags-5">{% endif %}
+		{% if forloop.counter == 200 %}</span><span class="fs-commontags-6">{% endif %}
 			<a href="{% url 'feedlists_tag_specific' tag %}" class="label label-info">{{ tag }}</a>
 		{% endfor %}
-		</div>
+		</span>
 	</div>
 	
 </div>

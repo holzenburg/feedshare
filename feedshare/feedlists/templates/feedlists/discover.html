@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Discover{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-4">
+		<h1>Popular lists</h1>
+		{% for feedlist in popular_feedlists %}
+			<hr />
+			<p class="lead">
+				<a class="oneline" href="{{ feedlist.get_absolute_url }}">
+					{% if feedlist.author %}{{ feedlist.author }}{% else %}{{ feedlist.slug }}{% endif %}
+				</a><br />
+				<small class="oneline">{{ feedlist }}</small>
+			</p>
+		{% endfor %}
+		<hr />
+	</div>
+	<div class="col-md-4">
+		<h1>Popular feeds</h1>
+		{% for feed in popular_feeds %}
+			<hr />
+			<p class="lead">
+				<a class="oneline" href="{{ feed.url }}">{{ feed.title }}</a><br />
+				<small class="oneline">{{ feed.url }}</small>
+			</p>
+		{% endfor %}
+		<hr />
+	</div>
+	<div class="col-md-4">
+		<h1>Popular tags</h1>
+		<hr />
+		<p class="lead">
+		{% for tag in popular_tags %}
+			<a class="label label-default" href="{% url 'feedlists_tag_specific' tag %}">{{ tag }}</a>
+		{% endfor %}
+		</p>
+	</div>
+</div>
+
+{% endblock %}

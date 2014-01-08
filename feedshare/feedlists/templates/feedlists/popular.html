@@ -1,25 +1,53 @@
 {% extends "base.html" %}
 
-{% block title %}Popuplar lists{% endblock %}
+{% block title %}Popular{% endblock %}
 
 {% block content %}
 
 <div class="row">
-	<div class="col-md-4 text-center">
-		<span style="font-size:150px;">
-			<i class="fa fa-sort-numeric-asc"></i>
-		</span>
+	<div class="sr-only">
+		<h1>Popular</h1>
 	</div>
-	<div class="col-md-8">
-		<ol class="lead">
-		{% for feedlist in feedlists %}
-			<li>
-				<a href="{{ feedlist.get_absolute_url }}">{{ feedlist }}</a>
-				<br class="visible-xs">
-				{% if feedlist.author %}<small>by {{ feedlist.author }}</small>{% endif %}
-			</li>
+	<div class="col-md-4 text-center">
+		<h2><span class="sr-only">Popular Lists</span><i class="fa fa-list"></i></h2>
+		{% for feedlist in popular_feedlists %}
+			<hr />
+			<p class="lead">
+				<a class="oneline" href="{{ feedlist.get_absolute_url }}">
+					{% if feedlist.author %}{{ feedlist.author }}{% else %}{{ feedlist.slug }}{% endif %}
+				</a><br />
+				<small class="oneline">{{ feedlist }}</small>
+			</p>
 		{% endfor %}
-		</ol>
+	</div>
+	<div class="col-md-4 text-center">
+		<h2><span class="sr-only">Popular Tags</span><i class="fa fa-tags"></i></h2>
+		<hr />
+		{% for tag in popular_tags %}
+			<p class="lead">
+				<a class="oneline" href="{% url 'feedlists_tag_specific' tag %}">{{ tag }}</a>
+			</p>
+		{% endfor %}
+	</div>
+	<div class="col-md-4 text-center">
+		<h2><span class="sr-only">Popular Feeds</span><i class="fa fa-star"></i></h2>
+		{% for feed in popular_feeds %}
+			<hr />
+			<p class="lead">
+				<a class="oneline text-danger" href="{{ feed.url }}">{{ feed.title }}</a><br />
+				<small class="oneline">{{ feed.site_url }}</small>
+			</p>
+		{% endfor %}
+	</div>
+	<div class="col-md-12 text-center">
+		<hr />
+		<p class="lead">
+			These are the currently most popular lists, tags and feeds.
+			<br />
+			You might want to <a href="{% url 'feedlists_search' %}">search</a>
+			or <a href="{% url 'feedlists_tags' %}">click</a>
+			for more inspiration.
+		</p>
 	</div>
 </div>
 

@@ -44,6 +44,20 @@ html, body {
     }
 }
 
+/* Index */
+
+body.fs-index {
+    color: #333;
+}
+body.fs-index h1 {
+    font-size: 300%;
+}
+body.fs-index p.lead {
+    font-size: 200%;
+    font-weight: 200;
+}
+body.fs-index .lead a {
+}
 
 /* Typography */
 
@@ -51,6 +65,14 @@ html, body {
     .lead {
         font-size: 18px;
     }
+}
+
+.oneline {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+    width: 100%;
+    display: inline-block;
 }
 
 /* Forms */
@@ -130,6 +152,17 @@ input[type="file"] {
 		width: 30px;
 		padding-left: 8px;
 	}
+    /*
+    form.navbar-form .twitter-typeahead input.form-control.input-sm.fs-search-input.tt-query {
+        vertical-align: baseline !important;
+        top: 1px;
+        z-index: 1;
+    }
+    form.navbar-form button {
+        position: relative;
+        z-index: 2;
+    }
+    */
 }
 
 /* Tagsinput */
@@ -240,7 +273,6 @@ input[type="file"] {
     margin: 0;
 }
 
-
 /* Tags */
 
 .fs-commontags-1 { font-size: 22px; }
@@ -248,4 +280,4 @@ input[type="file"] {
 .fs-commontags-3 { font-size: 18px; }
 .fs-commontags-4 { font-size: 16px; }
 .fs-commontags-5 { font-size: 14px; }
-.fs-commontags-6 { font-size: 12px; }
+.fs-commontags-6 { font-size: 13px; }

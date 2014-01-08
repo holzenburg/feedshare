@@ -15,13 +15,16 @@ FORBIDDEN_SLUGS = [
     'search',
     'autocomplete',
     'tag',
+    'tags',
     'category',
+    'discover',
     # content
     'about',
     'imprint',
     'privacy',
     'legal',
     'abuse',
+    'contribute',
     # accounts
     'account',
     'accounts',

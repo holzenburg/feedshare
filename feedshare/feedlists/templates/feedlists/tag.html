@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load cache %}
 
 {% block title %}{% if tag %}Tag {{ tag }}{% else %}Tags{% endif %}{% endblock %}
 
@@ -9,6 +10,7 @@ $('input[name=tag]').autocomplete('{% url "feedlists_autocomplete_tags" %}?q=%QU
 {% endblock %}
 
 {% block content %}
+
 <div class="row">
 	<div class="col-md-4 col-md-offset-4">
 
@@ -53,8 +55,8 @@ $('input[name=tag]').autocomplete('{% url "feedlists_autocomplete_tags" %}?q=%QU
 
 			{% for feedlist in feedlists %}
 			<p class="lead">
-				<a href="{{ feedlist.get_absolute_url }}">{{ feedlist }}</a><br>
-				<small>{% if feedlist.author %}by {{ feedlist.author }}{% else %}Anonymous{% endif %}</small>
+				<a href="{{ feedlist.get_absolute_url }}">{% if feedlist.author %}{{ feedlist.author }}{% else %}{{ feedlist.slug }}{% endif %}</a><br>
+				<small>{{ feedlist }}</small>
 			</p>
 			<hr />
 			{% empty %}
@@ -67,8 +69,12 @@ $('input[name=tag]').autocomplete('{% url "feedlists_autocomplete_tags" %}?q=%QU
 
 			{% for feed in feeds %}
 			<p class="lead">
-				<a href="{{ feed.url }}">{{ feed.title }}</a><br>
-				<small>{{ feed.url }}</small>
+				<a href="{{ feed.site_url }}" class="online text-danger">{{ feed.title }}</a><br>
+				<small class="oneline">
+					<a href="{{ feed.site_url }}" class="text-danger"><i class="fa fa-link"></i></a>
+					<a href="{{ feed.url }}" class="text-danger"><i class="fa fa-star"></i></a>
+					{{ feed.url }}
+				</small>
 			</p>
 			<hr />
 			{% empty %}
