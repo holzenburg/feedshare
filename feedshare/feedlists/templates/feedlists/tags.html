@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Most common tags{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" charset="utf-8">
+$('input[name=tag]').autocomplete('{% url "feedlists_autocomplete_tags" %}?q=%QUERY');
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+	    <form class="form" role="search" method="get" action="{% url 'feedlists_tag' %}">
+			<div class="row">
+				<div class="col-xs-8" style="padding-right:3px;">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-tag"></i>
+						</div>
+						<input type="text" name="tag" class="form-control input-lg" placeholder="Enter a tag" value="{% if tag %}{{ tag }}{% endif %}">
+					</div>
+				</div>
+				<div class="col-xs-4" style="padding-left:3px;">
+					<button type="submit" class="btn btn-block btn-lg btn-primary">Go</button>
+				</div>
+			</div>
+		</form>
+		<br />
+	</div>
+	
+	<div class="col-md-12 text-center">
+		{% for tag in tags %}
+		{% if forloop.counter == 1 %}<div class="fs-commontags-1">{% endif %}
+		{% if forloop.counter == 20 %}</div><div class="fs-commontags-2">{% endif %}
+		{% if forloop.counter == 50 %}</div><div class="fs-commontags-3">{% endif %}
+		{% if forloop.counter == 100 %}</div><div class="fs-commontags-4">{% endif %}
+		{% if forloop.counter == 150 %}</div><div class="fs-commontags-5">{% endif %}
+		{% if forloop.counter == 200 %}</div><div class="fs-commontags-6">{% endif %}
+			<a href="{% url 'feedlists_tag_specific' tag %}" class="label label-info">{{ tag }}</a>
+		{% endfor %}
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}

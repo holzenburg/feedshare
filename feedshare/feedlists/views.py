@@ -12,6 +12,7 @@ from taggit.models import Tag
 
 from .models import FeedList
 from .models import Feed
+from .models import FeedListFeed
 from .forms import FeedListUploadForm
 from .forms import FeedListLinkForm
 from .forms import FeedListEditForm
@@ -35,6 +36,7 @@ def popular(request, *args, **kwargs):
 def search(request, *args, **kwargs):
     q = request.GET.get('q')
     feedlists = None
+    feeds = None
     if q and len(q):
         feedlists = FeedList.objects.filter(Q(
             Q(title__icontains=q) |
@@ -42,10 +44,19 @@ def search(request, *args, **kwargs):
             Q(author_email__icontains=q) |
             Q(url__icontains=q) |
             Q(file__icontains=q) |
-            Q(tags__name__icontains=q)
-        )).order_by('-views')[:100]
-    return render(request, 'feedlists/search.html',
-                  dict(q=q, feedlists=feedlists))
+            Q(tags__name__icontains=q) |
+            Q(feedlistfeed__tags__name__icontains=q)
+        )).distinct().order_by('-views')[:100]
+        feeds = Feed.objects.filter(Q(
+            Q(title__icontains=q) |
+            Q(url__icontains=q) |
+            Q(feedlistfeed__tags__name__icontains=q)
+        )).distinct().order_by('-views')[:100]
+    return render(request, 'feedlists/search.html', dict(
+        q=q,
+        feedlists=feedlists,
+        feeds=feeds,
+    ))
 
 
 def tag(request, *args, **kwargs):
@@ -55,14 +66,25 @@ def tag(request, *args, **kwargs):
     feedlists = None
     feeds = None
     if tag and len(tag):
-        feedlists = FeedList.objects.filter(
-            tags__name__in=[tag]
-        ).distinct()[0:100]
+        feedlists = FeedList.objects.filter(Q(
+            Q(tags__name__in=[tag]) |
+            Q(feedlistfeed__tags__name__in=[tag])
+        )).distinct()[0:100]
         feeds = Feed.objects.filter(
             feedlistfeed__tags__name__in=[tag]
         ).distinct()[0:100]
-    return render(request, 'feedlists/tag.html',
-                  dict(tag=tag, feedlists=feedlists, feeds=feeds))
+    return render(request, 'feedlists/tag.html', dict(
+        tag=tag,
+        feedlists=feedlists,
+        feeds=feeds,
+    ))
+
+
+def tags(request, *args, **kwargs):
+    tags = FeedListFeed.tags.most_common()
+    return render(request, 'feedlists/tags.html', dict(
+        tags=tags
+    ))
 
 
 def share(request):

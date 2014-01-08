@@ -3,14 +3,23 @@ jQuery(function($) {
 });
 
 
+// Bootstrap tagsinput with custom typeahead support using
+// https://github.com/timschlechter/bootstrap-tagsinput
+// http://twitter.github.io/typeahead.js
+
 (function($){
     $.fn.extend({ 
+        autocomplete: function(url) {
+            return this.each(function() {
+        		$(this).typeahead({
+        			remote: url,
+        		}).bind('typeahead:selected', $.proxy(function (obj, result) {
+        			$(this).val(result.value);
+        		}, $(this)));
+            });
+        },
         autocompleteTags: function(url) {
             return this.each(function() {
-        		$(this).tagsinput();
- 
-        		// Adding custom typeahead support using
-        		// http://twitter.github.io/typeahead.js
         		$(this).tagsinput('input').typeahead({
         			remote: url,
         		}).bind('typeahead:selected', $.proxy(function (obj, result) {

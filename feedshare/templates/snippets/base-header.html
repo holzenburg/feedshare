@@ -13,7 +13,7 @@
 
 		<nav class="collapse navbar-collapse" id="nav-collapse" role="navigation">
 			<form class="navbar-form navbar-right fs-search-form" role="search" method="get" action="{% url 'feedlists_search' %}">
-				<input type="text" name="q" class="form-control input-sm fs-search-input" placeholder="Search for a list" value="{% if q %}{{ q }}{% endif %}">
+				<input type="text" name="q" class="form-control input-sm fs-search-input" placeholder="Search for lists &amp; feeds" value="{% if q %}{{ q }}{% endif %}">
 				<button type="submit" class="btn-sm btn btn-primary fs-search-button"><i class="fa fa-search"></i></button>
 			</form>
 			<ul class="nav navbar-nav navbar-right">

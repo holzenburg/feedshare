@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Search lists{% endblock %}
+{% block title %}{% if q %}Search for {{ q }}{% else %}Search{% endif %}{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" charset="utf-8">
+$('input[name=tag]').autocomplete('{% url "feedlists_autocomplete_tags" %}?q=%QUERY');
+</script>
+{% endblock %}
 
 {% block content %}
 
@@ -17,7 +23,7 @@
 	    <form class="form" role="search" method="get" action="{% url 'feedlists_search' %}">
 			<div class="row">
 				<div class="col-xs-8" style="padding-right:3px;">
-					<input type="text" name="q" class="form-control input-lg" placeholder="Search for a list" value="{% if q %}{{ q }}{% endif %}">
+					<input type="text" name="q" class="form-control input-lg" placeholder="Search for lists &amp; feeds" value="{% if q %}{{ q }}{% endif %}">
 				</div>
 				<div class="col-xs-4" style="padding-left:3px;">
 					<button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>

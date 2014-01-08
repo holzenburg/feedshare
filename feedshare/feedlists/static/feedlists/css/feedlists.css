@@ -11,8 +11,8 @@ html, body {
     padding-top: 0px;
 }
 .fs-page-content {
-    overflow: auto;  /* required for footer */
-    padding-bottom: 100px; /* needs to be bigger than footer height*/
+    overflow: visible;  /* required for footer */
+    padding-bottom: 150px; /* needs to be bigger than footer height*/
     padding-top: 50px;
 }
 .fs-page-footer {
@@ -36,7 +36,7 @@ html, body {
 
 @media(max-width:767px){
     .fs-page-content {
-        padding-bottom: 150px; /* needs to be bigger than footer height*/
+        padding-bottom: 180px; /* needs to be bigger than footer height*/
     }
     .fs-page-footer {
         margin-top: -80px; /* negative footer height */
@@ -93,9 +93,16 @@ input[type="file"] {
 		margin-bottom: 0;
 	}
     form.navbar-form.fs-search-form input.fs-search-input {
-		width: auto;
+		width: 79%;
 		display: inline;
+        margin: 0;
 	}
+    form.navbar-form.fs-search-form button.fs-search-button {
+        width: 19%;
+        display: inline;
+        float: right;
+        margin: 0;
+    }
 }
 @media (min-width: 768px) {
 	form.navbar-form.fs-search-form {
@@ -111,7 +118,7 @@ input[type="file"] {
 		border-color: #666;
 		background: #333;
 		color: #fff;
-		width: 150px;
+		width: 180px;
 		margin-right: 0;
 	}
     form.navbar-form.fs-search-form button.fs-search-button {
@@ -157,9 +164,15 @@ input[type="file"] {
     width: 100%;
 }
 
+.input-group .twitter-typeahead .form-control {
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+}
+
+
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .twitter-typeahead .tt-hint {
@@ -226,3 +239,13 @@ input[type="file"] {
 .tt-suggestion p {
     margin: 0;
 }
+
+
+/* Tags */
+
+.fs-commontags-1 { font-size: 22px; }
+.fs-commontags-2 { font-size: 20px; }
+.fs-commontags-3 { font-size: 18px; }
+.fs-commontags-4 { font-size: 16px; }
+.fs-commontags-5 { font-size: 14px; }
+.fs-commontags-6 { font-size: 12px; }

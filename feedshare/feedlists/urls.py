@@ -11,9 +11,11 @@ urlpatterns = patterns(
     url(r'^autocomplete/tags/$',
         'autocomplete_tags', name='feedlists_autocomplete_tags'),
     url(r'^tags/$',
-        'tag', name='feedlists_tags'),
-    url(r'^tags/(?P<tag>.+)/$',
+        'tags', name='feedlists_tags'),
+    url(r'^tag/$',
         'tag', name='feedlists_tag'),
+    url(r'^tags/(?P<tag>.+)/$',
+        'tag', name='feedlists_tag_specific'),
 
     url(r'^(?P<slug>[0-9A-Za-z\-\_]+)/edit/(?P<secret>[0-9A-Za-z]+)/$',
         'edit', name='feedlists_edit'),
