@@ -4,3 +4,6 @@
 local_settings.py
 datadump.json
 db.sqlite3
+coverage.xml
+testupload.xml
+pep8.txt

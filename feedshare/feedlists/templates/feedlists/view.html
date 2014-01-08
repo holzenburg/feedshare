@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}{{ feedlist }}{% if feedlist.author %} by {{ feedlist.author }}{% endif %}{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="nofollow" />
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" charset="utf-8">
+jQuery(function($) {
+	$('#FeedList').find('input[type=text]').click(function(event){
+		$(this).select();
+	});
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-sm-6">
+		<h1>{{ feedlist }}</h1>
+		{% if feedlist.author %}
+		<p class="lead">
+			{{ feedlist.author }}
+		</p>
+		{% endif %}
+		{% if feedlist.tags.count %}
+		<p>
+			{% for tag in feedlist.tags.all %}
+			<a class="label label-primary" href="{% url 'feedlists_tag' tag %}">{{ tag }}</a>
+			{% endfor %}
+		</p>
+		{% endif %}
+	</div>
+	<div class="col-sm-6 text-right">
+		<br class="hidden-xs" />
+		{% if feedlist.url %}
+			<a href="{{ feedlist.url }}" class="btn btn-lg btn-warning fs-download-opml-button">
+				<i class="fa fa-download"></i> {{ feedlist.url_filename }}
+			</a>
+		{% else %}{% if feedlist.file %}
+			<a href="{{ feedlist.file.url }}" class="btn btn-lg btn-warning fs-download-opml-button">
+				<i class="fa fa-download"></i> {{ feedlist.filename }}
+			</a>
+		{% endif %}{% endif %}
+		<br class="visible-xs" />
+		<br class="visible-xs" />
+	</div>
+</div>
+
+<div id="FeedList">
+	<hr class="hidden-xs" />
+	{% for feedlistfeed in feedlist.feedlistfeed_set.all %}
+		{% with feedlistfeed.feed as feed %}
+		{% with feedlistfeed.tags.all as tags %}
+		<div class="row">
+			<div class="col-md-9 col-sm-7 col-xs-12">
+				<h4 class="pull-left">
+					<a href="{{ feed.site_url }}" target="_blank">{{ feed.title }}</a>
+				</h4>
+				<p class="pull-right">
+					{% for tag in tags %}
+						<a class="label label-default" href="{% url 'feedlists_tag' tag %}">{{ tag }}</a>
+					{% endfor %}
+				</p>
+			</div>
+			<div class="col-md-3 col-sm-5 col-xs-12">
+				<div class="input-group">
+					<input type="text" class="form-control input-sm" value="{{ feed.url }}" />
+					<a class="input-group-addon" href="{{ feed.url }}"><i class="fa fa-link"></i></a>
+					<a class="input-group-addon" href="javascript:(function(btn){var z=document.createElement('script');document.subtomeBtn=btn;z.src='https://www.subtome.com/load.js';document.body.appendChild(z);})(this)" data-subtome-resource="{{ feed.url }}"><i class="fa fa-star"></i></a>
+				</div>
+			</div>
+		</div>
+		<hr />
+		{% endwith %}
+		{% endwith %}
+	{% endfor %}
+</div>
+<div class="text-center">
+	<i class="fa fa-bookmark"></i> {{ feedlist.feeds.count }} Feeds
+	&nbsp;&nbsp;&nbsp;
+	<i class="fa fa-calendar-o"></i> {{ feedlist.datetime_updated|date:"SHORT_DATETIME_FORMAT" }}
+</div>
+<br /><br />
+
+<div class="text-center">
+	<style type="text/css" media="screen">
+		.a2a_default_style a,
+		.a2a_default_style .a2a_dd {
+			display: inline-block;
+			float: none;
+		}
+	</style>
+	<!-- AddToAny BEGIN -->
+	<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+	<a class="a2a_dd" href="http://www.addtoany.com/share_save"></a>
+	<a class="a2a_button_facebook"></a>
+	<a class="a2a_button_twitter"></a>
+	<a class="a2a_button_app_net"></a>
+	<a class="a2a_button_google_plus"></a>
+	<a class="a2a_button_tumblr"></a>
+	<a class="a2a_button_evernote"></a>
+	<a class="a2a_button_stumbleupon"></a>
+	<a class="a2a_button_delicious"></a>
+	<a class="a2a_button_flipboard"></a>
+	<a class="a2a_button_digg"></a>
+	<a class="a2a_button_instapaper"></a>
+	<a class="a2a_button_pocket"></a>
+	<a class="a2a_button_pinterest"></a>
+	<a class="a2a_button_reddit"></a>
+	<a class="a2a_button_pinboard"></a>
+	<a class="a2a_button_email"></a>
+	</div>
+	<script type="text/javascript">
+	var a2a_config = a2a_config || {};
+	a2a_config.linkname = "Shared feed list: {{ feedlist }}";
+	a2a_config.linkurl = "http://feedlist.cc{{ feedlist.get_absolute_url }}";
+	a2a_config.onclick = 1;
+	</script>
+	<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+	<!-- AddToAny END -->
+
+</div>
+
+{% endblock %}

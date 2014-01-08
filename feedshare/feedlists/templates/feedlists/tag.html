@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Tag: {{ tag }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+
+		{% if not tag %}
+		<div class="text-center">
+			<span style="font-size:150px;">
+				<i class="fa fa-tags"></i>
+			</span>
+		</div>
+		{% endif %}
+
+	    <form class="form" role="search" method="get" action="{% url 'feedlists_tags' %}">
+			<div class="row">
+				<div class="col-xs-8" style="padding-right:3px;">
+					{% if tag %}
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-tag"></i>
+						</div>
+						<input type="text" name="tag" class="form-control input-lg" placeholder="Enter a tag" value="{% if tag %}{{ tag }}{% endif %}">
+					</div>
+					{% else %}
+					<input type="text" name="tag" class="form-control input-lg" placeholder="Enter a tag" value="{% if tag %}{{ tag }}{% endif %}">
+					{% endif %}
+				</div>
+				<div class="col-xs-4" style="padding-left:3px;">
+					<button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>
+				</div>
+			</div>
+		</form>
+		
+		{% if tag %}
+		<br />
+		{% endif %}
+		
+	</div>
+	
+	{% if tag %}
+		<div class="col-md-6 text-right">
+			<h1>Lists<span class="sr-only"> tagged with {{ tag }}</span></h1>
+			<hr />
+
+			{% for feedlist in feedlists %}
+			<p class="lead">
+				<a href="{{ feedlist.get_absolute_url }}">{{ feedlist }}</a><br>
+				<small>{% if feedlist.author %}by {{ feedlist.author }}{% else %}Anonymous{% endif %}</small>
+			</p>
+			<hr />
+			{% empty %}
+			<p class="lead">No lists tagged with <i>{{ tag }}</i></p>
+			{% endfor %}
+		</div>
+		<div class="col-md-6">
+			<h1>Feeds<span class="sr-only"> tagged with {{ tag }}</span></h1>
+			<hr />
+
+			{% for feed in feeds %}
+			<p class="lead">
+				<a href="{{ feed.url }}">{{ feed.title }}</a><br>
+				<small>{{ feed.url }}</small>
+			</p>
+			<hr />
+			{% empty %}
+			<p class="lead">No feeds tagged with <i>{{ tag }}</i></p>
+			{% endfor %}
+		</div>
+	{% endif %}
+		
+</div>
+
+{% endblock %}

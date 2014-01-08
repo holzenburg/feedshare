@@ -19,7 +19,10 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Hosts
-ALLOWED_HOSTS = ['feedshare.net', 'www.feedshare.net', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'feedshare.net', 'www.feedshare.net',
+    'localhost', '127.0.0.1'
+]
 
 # Application
 WSGI_APPLICATION = 'feedshare.wsgi.application'
@@ -42,7 +45,7 @@ DATABASES = {
 # Templates
 
 TEMPLATE_DIRS = [
-    os.path.abspath(os.path.join(BASE_DIR, 'templates'))
+    os.path.abspath(os.path.join(BASE_DIR, 'feedshare', 'templates'))
 ]
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
@@ -72,9 +75,9 @@ INSTALLED_APPS = (
     'bootstrap3',
     'bootstrap_pagination',
     'taggit',
-        
+
     # project apps
-    'feedlists'
+    'feedshare.feedlists'
 )
 
 
@@ -123,10 +126,10 @@ STATICFILES_FINDERS = (
 )
 
 
-# Grappelli 
+# Grappelli
 # http://grappelliproject.com
 
-GRAPPELLI_ADMIN_TITLE = 'FeedShare Admin'
+GRAPPELLI_ADMIN_TITLE = 'feedshare.net Admin'
 
 
 # Local settings
@@ -139,5 +142,3 @@ try:
     INSTALLED_APPS += LOCAL_APPS
 except ImportError, e:
     pass
-   
-

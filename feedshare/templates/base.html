@@ -1,0 +1,72 @@
+{% load bootstrap3 %}<!DOCTYPE html>
+<html>
+<head>
+
+<title>{% block page_title_full %}{% block title %}{% endblock %} - feedshare.net{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+{% block meta %}{% endblock %}
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap-tagsinput/bootstrap-tagsinput.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}feedlists/css/feedlists.css" />
+
+{% block css %}{% endblock %}
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+{% include "snippets/base-header.html" %}
+
+{% block default_messages_container %}
+{% if messages %}
+<div class="container fs-messages-container">
+	{% bootstrap_messages %}
+</div>
+{% endif %}
+{% endblock %}
+
+<div class="fs-page-wrap">
+	<div class="fs-page-content">
+
+		{% block content_full %}
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					{% block content %}{% endblock %}
+				</div>
+			</div>
+		</div>
+		{% endblock %}
+
+	</div>
+</div>
+
+{% include "snippets/base-footer.html" %}
+
+<!-- Javascript -->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}typeahead.js/typeahead.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}feedlists/js/feedlists.js"></script>
+
+{% block javascript %}{% endblock %}
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46214537-4', 'feedshare.net');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>

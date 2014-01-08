@@ -1,0 +1,1 @@
+from feedshare.settings import *

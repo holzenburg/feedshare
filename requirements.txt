@@ -12,3 +12,7 @@ django-bootstrap3
 django-bootstrap-pagination
 django-grappelli
 django-taggit
+django-taggit-live
+
+django-setuptest
+argparse
