@@ -1,5 +1,11 @@
 jQuery(function($) {
     $('.help-block').prepend('<i class="fa fa-info-circle"></i> ');
+
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    	$('body').addClass('mobile');
+    } else {
+    	$('body').addClass('desktop');
+    }
 });
 
 

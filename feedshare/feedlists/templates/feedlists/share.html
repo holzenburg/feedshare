@@ -6,11 +6,7 @@
 {% block javascript %}
 <script type="text/javascript" charset="utf-8">
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-	 $('#upload-tab').hide();
-	 $('#upload').hide();
-	 $('#link-tab a').tab('show');
-	 $('#tabs').hide();
-	 $('#intro-action').text('Link');
+	$('#link-tab a').tab('show');
 }
 </script>
 {% endblock %}
@@ -19,7 +15,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 <div class="text-center">
 	<h1>Share your list</h1>
 	<p class="lead">
-		<span id="intro-action">Upload or link</span> to your OPML feed list below.<br class="visible-xs"> It will be publicly available.<br />
+		Upload or link to your OPML feed list below. It will be publicly available.<br />
 		The slug will be part of the link to it.
 	</p>
 </div>
@@ -43,7 +39,19 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 		<div class="tab-content fs-tab-content">
 			<div class="tab-pane {% if used_form == 'upload' %}active{% endif %}" id="upload">
 
-				<form action="{% url 'feedlists_share' %}" method="post" class="form" enctype="multipart/form-data">
+				<div class="visible-mobile">
+					<div class="well">
+						<p class="alert alert-info" style="margin-bottom:5px;">
+							Since you are using a mobile device, you cannot upload your OPML file. To do so, please use a desktop browser. 
+							You still may link your file, if it's online.
+						</p>
+						<p style="margin-bottom:0px;">
+							<a href="javascript:$('#link-tab a').tab('show');" class="btn btn-block btn-lg btn-primary">Link OPML</a>
+						</p>
+					</div>
+				</div>
+
+				<form action="{% url 'feedlists_share' %}" method="post" class="form visible-desktop" enctype="multipart/form-data">
 					<input type="hidden" name="form_type" value="upload" />
 					{% csrf_token %}
 

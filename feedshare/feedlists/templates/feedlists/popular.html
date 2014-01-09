@@ -2,13 +2,34 @@
 
 {% block title %}Popular{% endblock %}
 
-{% block content %}
+{% block body_class %}fs-has-tabbar{% endblock %}
 
+{% block content_below %}
+<div class="fs-page-tabbar container text-center">
+	<ul class="nav nav-pills">
+		<li><a href="#lists"><i class="fa fa-list"></i> Lists</a></li>
+		<li><a href="#tags"><i class="fa fa-tags"></i> Tags</a></li>
+		<li><a href="#feeds"><i class="fa fa-star"></i> Feeds</a></li>
+	</ul>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" charset="utf-8">
+	$('body').scrollspy({
+		target: '.fs-page-tabbar',
+		offset: 50
+	});
+</script>
+{% endblock %}
+
+{% block content %}
 <div class="row">
 	<div class="sr-only">
 		<h1>Popular</h1>
 	</div>
-	<div class="col-md-4 text-center">
+	<div class="col-sm-4 text-center">
+		<div class="fs-anchor" id="lists"></div>
 		<h2><span class="sr-only">Popular Lists</span><i class="fa fa-list"></i></h2>
 		{% for feedlist in popular_feedlists %}
 			<hr />
@@ -20,8 +41,9 @@
 			</p>
 		{% endfor %}
 	</div>
-	<div class="col-md-4 text-center">
+	<div class="col-sm-4 text-center">
 		<hr class="visible-xs" />
+		<div class="fs-anchor" id="tags"></div>
 		<h2><span class="sr-only">Popular Tags</span><i class="fa fa-tags"></i></h2>
 		<hr />
 		{% for tag in popular_tags %}
@@ -30,8 +52,9 @@
 			</p>
 		{% endfor %}
 	</div>
-	<div class="col-md-4 text-center">
+	<div class="col-sm-4 text-center">
 		<hr class="visible-xs" />
+		<div class="fs-anchor" id="feeds"></div>
 		<h2><span class="sr-only">Popular Feeds</span><i class="fa fa-star"></i></h2>
 		{% for feed in popular_feeds %}
 			<hr />
