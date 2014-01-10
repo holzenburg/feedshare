@@ -19,11 +19,6 @@ html, body {
     overflow: visible;  /* required for footer */
     padding-bottom: 150px; /* needs to be bigger than footer height*/
 }
-@media (min-width: 768px) {
-    .fs-page-content {
-        padding-top: 50px;
-    }
-}
 .fs-page-footer {
     background: #e4e3e2;
     color: #666;
@@ -53,8 +48,16 @@ html, body {
     text-align: center;
     padding: 5px;
 }
-.fs-page-tabbar .nav-pills li a:link {
+/*.fs-page-tabbar .nav-pills li a:link {
     background: #fff;
+}*/
+.fs-page-tabbar .nav-pills li a {
+    color: #333;
+    background: #fff;
+}
+.fs-page-tabbar .nav-pills li.active a {
+    color: #fff;
+    background: #333;
 }
 body.fs-has-tabbar .fs-page-footer {
     margin-top: -100px;
@@ -68,7 +71,8 @@ body.fs-has-tabbar .fs-page-footer {
         margin-top: -80px; /* negative footer height */
         height: 80px;
     }
-    body.fs-has-tabbar .fs-page-footer {
+    body.fs-has-tabbar .fs-page-footer,
+    body.fs-has-tabbar-mobile .fs-page-footer {
         margin-top: -130px;
     }
 }
@@ -287,6 +291,9 @@ input[type="file"] {
 .twitter-typeahead .tt-hint {
     margin-bottom: 0;
 }
+input.form-control.input-lg.tt-query {
+    background-color: white !important;
+}
 
 .twitter-typeahead .tt-hint {
     display: none;
@@ -361,3 +368,4 @@ input[type="file"] {
 .fs-commontags-4 { font-size: 16px; }
 .fs-commontags-5 { font-size: 14px; }
 .fs-commontags-6 { font-size: 13px; }
+
