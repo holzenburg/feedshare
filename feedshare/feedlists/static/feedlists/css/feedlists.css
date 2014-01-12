@@ -19,6 +19,11 @@ html, body {
     overflow: visible;  /* required for footer */
     padding-bottom: 150px; /* needs to be bigger than footer height*/
 }
+
+.fs-messages-container {
+    padding-top: 24px;
+}
+
 @media (min-width: 768px) {
     .fs-page-content {
         padding-top: 50px;

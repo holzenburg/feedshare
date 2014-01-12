@@ -16,3 +16,6 @@ django-taggit-live
 
 django-setuptest
 argparse
+
+django-allauth==0.15.0
+django-bootstrap-form==3.1

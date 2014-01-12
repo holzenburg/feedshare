@@ -20,6 +20,9 @@ urlpatterns = patterns(
         template_name='general/privacy.html'), name='privacy'),
     url(r'^contribute/$', TemplateView.as_view(
         template_name='general/contribute.html'), name='contribute'),
+    url(r'^accounts/profile/$', TemplateView.as_view(
+        template_name='account/profile.html'), name='profile'),
+    (r'^accounts/', include('allauth.urls')),
     url(r'^', include('feedshare.feedlists.urls')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
