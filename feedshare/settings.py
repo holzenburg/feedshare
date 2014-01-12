@@ -62,9 +62,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
+    # allauth specific context processors
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
-
+SITE_ID = 1
 # Applications
 
 INSTALLED_APPS = (
@@ -78,6 +81,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # third party
     'south',
@@ -85,9 +89,18 @@ INSTALLED_APPS = (
     'bootstrap3',
     'bootstrap_pagination',
     'taggit',
+    'bootstrapform',
 
     # project apps
-    'feedshare.feedlists'
+    'feedshare.feedlists',
+
+    # Auth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # Third kinds
+    'allauth.socialaccount.providers.github',
 )
 
 
@@ -102,6 +115,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -141,6 +161,7 @@ STATICFILES_FINDERS = (
 
 GRAPPELLI_ADMIN_TITLE = 'feedshare.net Admin'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Local settings
 # - Set a SECRET_KEY!

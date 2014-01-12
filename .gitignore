@@ -7,3 +7,4 @@ db.sqlite3
 coverage.xml
 testupload.xml
 pep8.txt
+venv
