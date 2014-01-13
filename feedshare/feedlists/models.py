@@ -92,7 +92,7 @@ class FeedList(PopularityModel):
     author_email = models.EmailField(
         max_length=255,
         blank=True, null=True,
-        verbose_name='Email address',
+        verbose_name='E-mail address',
         help_text='Not public, just to recover the secret editing key')
     file = models.FileField(
         upload_to=get_upload_path,

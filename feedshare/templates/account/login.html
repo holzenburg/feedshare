@@ -1,49 +1,66 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 
 {% load url from future %}
 {% load i18n %}
 {% load bootstrap %}
 {% load account %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
-
+{% block title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
+{% if not user.is_authenticated %}
+<form method="post" action="{% url 'account_login' %}">
+	{% csrf_token %}
+	{% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />{% endif %}
 
-<h1>{% trans "Sign In" %}</h1>
-
-{% if socialaccount.providers  %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a> 
-for a {{site_name}} account and sign in
-below:{% endblocktrans %}</p>
-
-<div class="socialaccount_ballot">
-
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
-
-  <div class="login-or">{% trans 'or' %}</div>
-
-</div>
-
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form|bootstrap }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <div class="form-actions">
-    <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
-    <a class="btn" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-
-  </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>{% trans "Sign In" %}</h1>
+				<p class="lead">
+					{% trans "Please log in to your existing account to manage your lists." %}
+				</p>
+				
+				{% if socialaccount.providers  %}
+					<ul class="fs-socialaccount-providers list-unstyled list-inline lead">
+						<li><strong>{% trans "Via" %}</strong></li>
+						{% include "socialaccount/snippets/provider_list.html" with process="login" %}
+					</ul>
+					{% include "socialaccount/snippets/login_extra.html" %}
+					<br />
+				{% endif %}
+										
+				<div class="form-inline">
+					{% if socialaccount.providers  %}
+					<div class="form-group" style="padding-right:15px;">
+						<strong>{% trans "or" %}</strong>
+					</div>
+					{% endif %}
+					<div class="form-group">
+						<label class="sr-only" for="id_email">{% trans "E-mail" %}</label>
+						<input type="email" class="form-control input-lg" id="id_login" name="login" placeholder="{% trans "E-mail address" %}">
+					</div>
+					<div class="form-group">
+						<label class="sr-only" for="id_password">{% trans "Password" %}</label>
+						<input type="password" class="form-control input-lg" id="id_password" name="password" placeholder="{% trans "Password" %}">
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-warning btn-lg">{% trans "Sign In" %}</button>
+					</div>
+					<br />
+					<br />
+					<div class="checkbox">
+						<label for="id_remember">
+							<input id="id_remember" name="remember" type="checkbox" /> {% trans "Remember me" %}
+						</label>
+					</div>
+					<a class="btn btn-link" href="{% url 'account_reset_password' %}">{% trans "Forgot your password?" %}</a>
+				</div>
+		
+			</div>
+		</div>
+	</div>
 </form>
-
+{% endif %}
 {% endblock %}
 

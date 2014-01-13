@@ -1,27 +1,49 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 
 {% load url from future %}
-{% load bootstrap %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
-    
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-        
-<form id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form|bootstrap }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <div class="form-actions">
-  <button class="btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
-  </div>
-</form>
+{% if not user.is_authenticated %}
+<form method="post" action="{% url 'account_signup' %}">
+	{% csrf_token %}
+	{% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />{% endif %}
 
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>{% trans "Sign Up" %}</h1>
+				<p class="lead">
+					{% trans "Please create an account to share a list." %}
+				</p>
+			</div>
+			<div class="col-md-12">
+
+				<div class="form-inline">
+					<div class="form-group {% if form.email.errors %}has-error{% endif %}">
+						<label class="sr-only" for="id_email">{% trans "E-mail" %}</label>
+						<input type="email" value="{% if form.email.value %}{{ form.email.value }}{% endif %}" id="id_email" name="email" class="form-control input-lg" placeholder="{% trans "E-mail address" %}" />
+					</div>
+					<div class="form-group {% if form.password1.errors %}has-error{% endif %}">
+						<label class="sr-only" for="id_password1">{% trans "Password" %}</label>
+						<input type="password" value="{% if form.password1.value %}{{ form.password1.value }}{% endif %}" id="id_password1" name="password1" class="form-control input-lg" placeholder="{% trans "Choose password" %}" />
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-lg">{% trans "Sign up" %}</button>
+					</div>
+				</div>
+				<br />
+				<p>
+					<a href="{{ login_url }}">{% trans "Already have an account?" %}</a>
+				</p>
+		
+			</div>
+		</div>
+	</div>
+</form>
+{% endif %}
 {% endblock %}
 
 

@@ -18,6 +18,8 @@ SECRET_KEY = '---replace-this-with-a-custom-secret-key---'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+SITE_ID = 1
+
 # Hosts
 ALLOWED_HOSTS = [
     'feedshare.net', 'www.feedshare.net',
@@ -63,18 +65,18 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     # allauth specific context processors
-    "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
+    'allauth.account.context_processors.account',
+    'allauth.socialaccount.context_processors.socialaccount',
 )
 
-SITE_ID = 1
+
 # Applications
 
 INSTALLED_APPS = (
-    # grappelli
+    # Grappelli
     'grappelli',
 
-    # django contrib
+    # Django Contrib
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,7 +85,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    # third party
+    # Third party
     'south',
     'django_extensions',
     'bootstrap3',
@@ -91,7 +93,7 @@ INSTALLED_APPS = (
     'taggit',
     'bootstrapform',
 
-    # project apps
+    # Project apps
     'feedshare.feedlists',
 
     # Auth
@@ -100,7 +102,11 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
 
     # Third kinds
-    'allauth.socialaccount.providers.github',
+    # Since social providers need some more setup (via database)
+    # and secret keys, please add them as LOCAL_APPS in local_settings
+    # 'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.twitter',
 )
 
 
@@ -117,10 +123,10 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
+    'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 # Internationalization
@@ -164,7 +170,8 @@ GRAPPELLI_ADMIN_TITLE = 'feedshare.net Admin'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Local settings
-# - Set a SECRET_KEY!
+# - Set a SECRET_KEY
+# - Add social auth providers
 
 LOCAL_APPS = tuple()
 
