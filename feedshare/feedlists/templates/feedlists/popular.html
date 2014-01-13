@@ -2,15 +2,17 @@
 
 {% block title %}Popular{% endblock %}
 
-{% block body_class %}fs-has-tabbar{% endblock %}
+{% block body_class %}fs-has-tabbar-mobile{% endblock %}
 
 {% block content_below %}
-<div class="fs-page-tabbar container text-center">
-	<ul class="nav nav-pills">
-		<li><a href="#lists"><i class="fa fa-list"></i> Lists</a></li>
-		<li><a href="#tags"><i class="fa fa-tags"></i> Tags</a></li>
-		<li><a href="#feeds"><i class="fa fa-star"></i> Feeds</a></li>
-	</ul>
+<div class="visible-xs">
+	<div class="fs-page-tabbar container text-center">
+		<ul class="nav nav-pills">
+			<li><a href="#lists"><i class="fa fa-list"></i> Lists</a></li>
+			<li><a href="#tags"><i class="fa fa-tags"></i> Tags</a></li>
+			<li><a href="#feeds"><i class="fa fa-star"></i> Feeds</a></li>
+		</ul>
+	</div>
 </div>
 {% endblock %}
 
