@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load account %}
+
+{% block content %}
+<h1>Profile for {% user_display request.user %}</h1>
+
+<h2>Accounts</h2>
+{% get_social_accounts user as accounts %}
+
+{% for account_type, sub_accounts in accounts.items %}
+<h3>{{ account_type }}</h3>
+	{% for account in sub_accounts %}
+	<p>{{ account }}</p>
+	{% endfor %}
+{% endfor %}
+
+{% endblock %}
