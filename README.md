@@ -4,7 +4,9 @@
 feedshare
 =========
 
-__[feedshare.net](http://feedshare.net)__ is a service to share and discover OPML feed lists.
+__feedshare.net__ was a service to share and discover OPML feed lists.
+
+It no longer is, and the domain has been repurposed.
 
 Features
 --------
